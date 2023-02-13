@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-
+import { Request, Response, Router } from 'express';
+const router = Router();
 
 const test = (req: Request, res: Response) => {
-    res.send({ message: 'test' });
+    res.json({ message: 'test' });
   };
 
 const promiseTest = (req: Request, res: Response) => {
@@ -21,4 +21,8 @@ const asyncTest = async (req: Request, res: Response) => {
   res.send({message: 'this is an async test'})
 };
 
-export {test, asyncTest, promiseTest};
+router.get('/test', test);
+router.get('/test2', asyncTest);
+router.get('/test3', promiseTest);
+
+export {router};

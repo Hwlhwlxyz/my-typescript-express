@@ -1,19 +1,15 @@
 import { Router } from 'express';
-import { asyncThrowError, throwError} from './component/exception/exception.controller';
-import { asyncTest, promiseTest, test } from './component/test/test.controller';
+import { router as testRouter } from './component/test/test.controller';
+import { router as exceptionRouter } from './component/exception/exception.controller';
+import { createLog, logResponseBody, responseLogger, traceMiddleware } from './middleware/logger.middleware';
 
 const router: Router = Router();
+router.use(createLog);
+router.use(traceMiddleware);
+router.use(logResponseBody);
+router.use(responseLogger);
 
-const exceptionRouter = Router();
-exceptionRouter.get('/exception', throwError);
-exceptionRouter.get('/exception2', asyncThrowError);
-
-const testRouter = Router();
-testRouter.get('/test', test);
-testRouter.get('/test2', asyncTest);
-testRouter.get('/test3', promiseTest);
-
-router.use('/exception', exceptionRouter);
 router.use('/test', testRouter);
+router.use('/exception', exceptionRouter);
 
 export default router;
